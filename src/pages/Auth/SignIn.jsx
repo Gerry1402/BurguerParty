@@ -1,18 +1,50 @@
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Form from 'react-bootstrap/Form';
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const SignIn = () => {
+    // const handleSubmit = (event) => {
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                    {`We'll never share your email with anyone else.`}
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-        </Card>
+        <Form>
+            <Container>
+                <Row>
+                    <Col sm={6}>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="Enter email"
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col sm={6}>
+                        <Form.Group
+                            className="mb-3"
+                            controlId="formBasicPassword"
+                        >
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            style={{ width: "100%" }}
+                        >
+                            Submit
+                        </Button>
+                    </Col>
+                </Row>
+            </Container>
+        </Form>
     );
 };
 
