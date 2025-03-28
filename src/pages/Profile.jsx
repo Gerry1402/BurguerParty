@@ -1,7 +1,7 @@
 const Profile = () => {
   return (
     <div>
-      Profile USERS
+      Profile
     </div>
   );
 };
