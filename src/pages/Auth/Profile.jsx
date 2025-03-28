@@ -10,20 +10,25 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const Profile = () => {
 
     const {uuid} = useParams();
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState();
 
     useEffect(() => {
         const fetchUser = async () => {
             console.log("Buscando usuario con ID:", uuid);
+
+            // const { data, error } = await supabase.auth.getUser();
+
+            console.log(data)
             const { data, error } = await supabase
-                .from("users")
+                .from("auth.users")
                 .select("*")
-                .eq("uid", uuid)
+                .eq("id", uuid)
                 .single();
 
-                
+            
 
             if (error) {
+                console.log(data)
                 console.error("Error fetching user:", error);
             } else {
                 console.log("Datos del usuario:", data);
@@ -34,7 +39,7 @@ const Profile = () => {
         if (uuid) {
             fetchUser();
         }
-    }, [uuid]);
+    }, []);
 
     return (
         <>
@@ -42,7 +47,8 @@ const Profile = () => {
                 <h1>Profile</h1>
                 {userData ? (
                 <div>
-                    <p><strong>Nombre:</strong> {userData.name}</p>
+                    <p><strong>Nombre:</strong> {userData.user_metadata?.name}</p>
+                    {/* <p><strong>Nombre:</strong> {userData.name}</p> */}
                     <p><strong>Email:</strong> {userData.email}</p>
                 </div>
             ) : (
