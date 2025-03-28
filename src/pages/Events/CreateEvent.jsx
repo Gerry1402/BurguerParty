@@ -19,8 +19,8 @@ function CreateEvent() {
   };
 
   return (
-    <div className="w-50 position-relative mx-auto mt-5">
-      <Link to="/page2" className="btn btn-secondary position-fixed top-0 start-0 m-3">
+    <div className="w-75 position-relative mx-auto mt-5">
+      <Link to="/" className="btn btn-secondary position-fixed top-0 start-0 m-3">
         ⬅ Volver
       </Link>
 

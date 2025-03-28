@@ -4,8 +4,8 @@ import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 const supabaseUrl = "https://apwvdicuxcbvlhqcjpld.supabase.co";
-const supabaseAnonKey = import.meta.env.VITE_API_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabaseKey  = import.meta.env.VITE_SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey );
 
 const Profile = () => {
 
