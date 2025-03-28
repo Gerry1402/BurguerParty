@@ -70,6 +70,7 @@ function CreateEvent() {
                 />
               </Form.Group>
             </Form>
+
             <div className="d-flex justify-content-end mt-4">
               <Button variant="primary">Crear</Button>
             </div>
