@@ -1,0 +1,5 @@
+Crear archivo ".env" en raiz i poner lo siguiente:
+"VITE_SUPABASE_KEY = '...'"
+
+Luego, cuando se quiera acceder a la variable se hara asi:
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
