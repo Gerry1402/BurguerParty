@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -19,9 +20,9 @@ function CreateEvent() {
 
   return (
     <div className="w-50 position-relative mx-auto mt-5">
-      <Button variant="secondary" className="position-fixed top-0 start-0 m-3">
+      <Link to="/page2" className="btn btn-secondary position-fixed top-0 start-0 m-3">
         ⬅ Volver
-      </Button>
+      </Link>
 
       <Container>
         <Card className="p-4 shadow">
@@ -70,6 +71,7 @@ function CreateEvent() {
                 />
               </Form.Group>
             </Form>
+
             <div className="d-flex justify-content-end mt-4">
               <Button variant="primary">Crear</Button>
             </div>
