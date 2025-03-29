@@ -11,8 +11,8 @@ const Router = () => (
     <BrowserRouter>
         <Routes>   
             <Route index element={<Events/>} />
-            <Route path="/sign-in" element={<SignIn/>} />
-            <Route path="/sign-up" element={<SignUp/>} />
+            <Route path="/signin" element={<SignIn/>} />
+            <Route path="/signup" element={<SignUp/>} />
             <Route path="/create-event" element={<CreateEvent/>} />
             <Route path="/events/:id" element={<DetailsEvent/>} />
             <Route path="/profile/:uuid" element={<Profile/>} />
