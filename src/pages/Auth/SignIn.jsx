@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { signInSupabase, signUpSupabase } from "../../services/supabase/auth";
+import { signInSupabase } from "../../services/supabase/auth";
 import { useState } from "react";
 
 const SignIn = () => {
@@ -18,7 +18,7 @@ const SignIn = () => {
         }
 
         const { email, password } = json;
-        const user = await signUpSupabase(email, password);
+        const user = await signInSupabase(email, password);
         if (!user) {
             console.log("Error creating user");
         } else {
