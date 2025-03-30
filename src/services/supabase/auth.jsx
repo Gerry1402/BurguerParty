@@ -1,20 +1,25 @@
 import supabase from './supabase'
 
-export const signUpSupabase = async (json) => {
-    let { data, error } = await supabase.auth.signUp(json);
+export const signUpSupabase = async (email, password) => {
+    const { user, error } = await supabase.auth.signUp({email, password});
     if (error) {
         console.log("Error: ", error);
-    } else {
-        console.log("Data: ", data);
+        return null;
+    }
+    else{
+        console.log("User: ", user);
+        return user;
     }
 };
 
-export const signInSupabase = async (json) => {
-    let { data, error } = await supabase.auth.signInWithPassword(json);
+export const signInSupabase = async (email, password) => {
+    const { user, error } = await supabase.auth.signInWithPassword({email, password});
     if (error) {
         console.log("Error: ", error);
-    } else {
-        console.log("Data: ", data);
+        return null;
+    } else{
+        console.log("User: ", user);
+        return user;
     }
 };
 
