@@ -1,14 +1,13 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import { AuthProvider } from "./Auth/AuthProvider";
-
-import Auth from "./Auth";
-import CreateEvent from "../pages/Events/CreateEvent";
-import DetailsEvent from "../pages/Events/DetailsEvent";
-import Events from "../pages/Events/Events";
-import Profile from "../pages/Auth/Profile";
-import SignIn from "../pages/Auth/SignIn";
-import SignUp from "../pages/Auth/SignUp";
+import { AuthProvider } from './Auth/AuthProvider';
+import Auth from './Auth/Auth';
+import CreateEvent from '../pages/Events/CreateEvent';
+import DetailsEvent from '../pages/Events/DetailsEvent';
+import Events from '../pages/Events/Events';
+import Profile from '../pages/Auth/Profile';
+import SignIn from '../pages/Auth/SignIn';
+import SignUp from '../pages/Auth/SignUp';
 
 const Router = () => (
     <AuthProvider>

@@ -1,9 +1,9 @@
-body{
-  display: flex;
-  min-height: 100vh;
-  align-items: center;
+body {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
 }
-#root{
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+#root {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }

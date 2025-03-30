@@ -1,100 +1,78 @@
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { signInSupabase } from "../../services/supabase/auth";
-import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+
+import { inputs, defaultValues } from '../../data/Forms/User/SignIn.js';
+import supabase from '../../services/supabase.jsx';
 
 const SignIn = () => {
-    const [json, setJson] = useState({ email: "", password: "" });
+    const [formData, setFormData] = useState(defaultValues);
     const [validated, setValidated] = useState(false);
+    const navigate = useNavigate();
+
+    const handleChange = (e) =>
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
 
     const handleSubmit = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-        if (e.currentTarget.checkValidity() === false) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        const { email, password } = json;
-        const user = await signInSupabase(email, password);
-        if (!user) {
-            console.log("Error creating user");
+        const { email, password } = formData;
+        const {
+            data: { user },
+            error,
+        } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+            console.error('Error: ', error);
         } else {
-            console.log("User created: ", user);
-            window.location.href = "/";
+            console.log('User: ', user);
+            navigate(`/`);
         }
         setValidated(true);
     };
 
     return (
-        <>
-            <Form
-                noValidate
-                validated={validated}
-                onSubmit={(e) => handleSubmit(e)}
-            >
-                <Container>
-                    <Row>
-                        <Col xs={12} md={6} lg={6}>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control
-                                    required
-                                    onChange={(e) =>
-                                        setJson({
-                                            ...json,
-                                            email: e.target.value,
-                                        })
-                                    }
-                                    type="email"
-                                    placeholder="example@email.com"
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Write a valid email.
-                                </Form.Control.Feedback>
+        <Container>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                {inputs.map((row, index) => (
+                    <Row key={index}>
+                        {row.map((input, index) => (
+                            <Form.Group as={Col} key={index} {...input.size} className="mb-3">
+                                <FloatingLabel label={input.label}>
+                                    <Form.Control
+                                        required
+                                        {...input.control}
+                                        placeholder=""
+                                        onChange={handleChange}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {input.feedback}
+                                    </Form.Control.Feedback>
+                                    <Form.Control.Feedback />
+                                </FloatingLabel>
                             </Form.Group>
-                        </Col>
-                        <Col xs={12} md={6} lg={6}>
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicPassword"
-                            >
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                    required
-                                    onChange={(e) =>
-                                        setJson({
-                                            ...json,
-                                            password: e.target.value,
-                                        })
-                                    }
-                                    type="password"
-                                    placeholder="Pa$$w0rd"
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Must contain minimum 8 characters
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                        </Col>
+                        ))}
                     </Row>
-                    <Row>
-                        <Col xs={12} md={12} lg={12}>
-                            <Button
-                                variant="primary"
-                                className="w-100"
-                                type="submit"
-                            >
-                                Sign In
-                            </Button>
-                        </Col>
-                    </Row>
-                </Container>
+                ))}
+                <Row>
+                    <Col xs={12} md={12} lg={12}>
+                        <Button variant="primary" className="w-100" type="submit">
+                            Sign In
+                        </Button>
+                    </Col>
+                </Row>
             </Form>
-            <div className="text-center mt-3">
+            <Row className="text-center mt-3">
                 <p>
-                    Don&apos;t have an account?{" "}
+                    Don&apos;t have an account?{' '}
                     <a
                         href="/signup"
                         className="text-primary link-underline link-underline-opacity-0"
@@ -102,8 +80,8 @@ const SignIn = () => {
                         Sign Up
                     </a>
                 </p>
-            </div>
-        </>
+            </Row>
+        </Container>
     );
 };
 
