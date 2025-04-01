@@ -42,26 +42,24 @@ const SignIn = () => {
     return (
         <Container>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                {inputs.map((row, index) => (
-                    <Row key={index}>
-                        {row.map((input, index) => (
-                            <Form.Group as={Col} key={index} {...input.size} className="mb-3">
-                                <FloatingLabel label={input.label}>
-                                    <Form.Control
-                                        required
-                                        {...input.control}
-                                        placeholder=""
-                                        onChange={handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {input.feedback}
-                                    </Form.Control.Feedback>
-                                    <Form.Control.Feedback />
-                                </FloatingLabel>
-                            </Form.Group>
-                        ))}
-                    </Row>
-                ))}
+                <Row>
+                    {inputs.map((input, index) => (
+                        <Form.Group as={Col} {...input.size} className="mb-3" key={index}>
+                            <FloatingLabel label={input.label}>
+                                <Form.Control
+                                    required
+                                    {...input.control}
+                                    placeholder=""
+                                    onChange={handleChange}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {input.feedback}
+                                </Form.Control.Feedback>
+                                <Form.Control.Feedback />
+                            </FloatingLabel>
+                        </Form.Group>
+                    ))}
+                </Row>
                 <Row>
                     <Col xs={12} md={12} lg={12}>
                         <Button variant="primary" className="w-100" type="submit">

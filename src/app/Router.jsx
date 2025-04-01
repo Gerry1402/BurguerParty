@@ -8,6 +8,7 @@ import Events from '../pages/Events/Events';
 import Profile from '../pages/Auth/Profile';
 import SignIn from '../pages/Auth/SignIn';
 import SignUp from '../pages/Auth/SignUp';
+import Public from './Auth/Public';
 
 const Router = () => (
     <AuthProvider>
@@ -21,9 +22,11 @@ const Router = () => (
                     <Route path="/profile/:uuid" element={<Profile />} />
                 </Route>
                 {/* Public Routes */}
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="*" element={<Navigate to="/signin" />} />
+                <Route element={<Public />}>
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="*" element={<Navigate to="/signin" />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     </AuthProvider>

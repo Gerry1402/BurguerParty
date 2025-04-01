@@ -1,11 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { useNavigate } from 'react-router-dom';
 
 import { inputs, defaultValues } from '../../data/Forms/User/SignUp';
 import supabase from '../../services/supabase';
@@ -53,28 +53,26 @@ const SignUp = () => {
 
     return (
         <>
-            <Form noValidate validated={validated} onSubmit={(e) => handleSubmit(e)}>
-                <Container>
-                    {inputs.map((row, index) => (
-                        <Row key={index}>
-                            {row.map((input, index) => (
-                                <Form.Group as={Col} key={index} {...input.size} className="mb-3">
-                                    <FloatingLabel label={input.label}>
-                                        <Form.Control
-                                            required
-                                            {...input.control}
-                                            placeholder=""
-                                            onChange={handleChange}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {input.feedback}
-                                        </Form.Control.Feedback>
-                                        <Form.Control.Feedback />
-                                    </FloatingLabel>
-                                </Form.Group>
-                            ))}
-                        </Row>
-                    ))}
+            <Container>
+                <Form noValidate validated={validated} onSubmit={(e) => handleSubmit(e)}>
+                    <Row>
+                        {inputs.map((input, index) => (
+                            <Form.Group as={Col} {...input.size} className="mb-3" key={index}>
+                                <FloatingLabel label={input.label}>
+                                    <Form.Control
+                                        required
+                                        {...input.control}
+                                        placeholder=""
+                                        onChange={handleChange}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {input.feedback}
+                                    </Form.Control.Feedback>
+                                    <Form.Control.Feedback />
+                                </FloatingLabel>
+                            </Form.Group>
+                        ))}
+                    </Row>
                     <Row>
                         <Col xs={12} md={12} lg={12}>
                             <Button variant="primary" className="w-100" type="submit">
@@ -82,10 +80,8 @@ const SignUp = () => {
                             </Button>
                         </Col>
                     </Row>
-                </Container>
-            </Form>
-            <Container className="text-center mt-3">
-                <p>
+                </Form>
+                <p className="text-center mt-3">
                     Already have an account?{' '}
                     <a
                         href="/signin"

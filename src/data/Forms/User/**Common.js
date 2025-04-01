@@ -28,6 +28,18 @@ const common = {
         feedback: 'Write one or two surnames',
     },
 
+    username: {
+        label: 'Username',
+        group: '@',
+        control: {
+            type: 'text',
+            placeholder: 'username',
+            name: 'username',
+            defaultValue: '',
+        },
+        feedback: 'Try other username',
+    },
+
     email: {
         label: 'Email',
         control: {
@@ -69,8 +81,8 @@ const common = {
         control: {
             type: 'date',
             name: 'birthdate',
-            defaultValue: adultAge(18),
-            max: adultAge(18),
+            defaultValue: adultAge(),
+            max: adultAge(),
         },
         feedback: 'Write a valid birthdate',
     },
