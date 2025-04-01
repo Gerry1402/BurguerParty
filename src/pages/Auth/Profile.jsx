@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-// import { useParams } from "react-router-dom";
+import { Card, Container, ListGroup } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import supabase from "../../services/supabase";
 // import {useAuth} from '../../app/Auth/useAuthContext';
 
@@ -9,47 +9,48 @@ import supabase from "../../services/supabase";
 
 const Profile = () => {
 
-    
 
-    const [users, setUsers] = useState([]);
+    const [user, setUsers] = useState([]);
+    const {uuid} = useParams();
 
     useEffect(() => {
         const fetchUsers = async () => {
-            console.log("Obteniendo todos los usuarios...");
 
-            const { data, error } = await supabase.auth.admin.listUsers();
+
+            const { data, error } = await supabase.auth.admin.getUserById(uuid);
 
             if (error) {
                 console.error("Error al obtener usuarios:", error);
                 return;
             }
 
-            console.log("Usuarios obtenidos:", data.users);
-            setUsers(data.users);
+            setUsers(data.user);
         };
 
         fetchUsers();
-    }, []);
+    }, [uuid]);
 
     return (
         <>
-            <Container>
-            <h1>Lista de Usuarios</h1>
-            {users.length > 0 ? (
-                <ul>
-                    {users.map(user => (
-                        <li key={user.id}>
-                            <strong>Email:</strong> {user.email} <br />
-                            <strong>UID:</strong> {user.id} <br />
-                            <strong>Nombre:</strong> {user.user_metadata?.name || "No disponible"}
-                            <hr />
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>Cargando usuarios...</p>
-            )}
-        </Container>
+    <Container className="d-flex justify-content-center align-items-center vh-90">
+        
+        {user ? 
+        <Card key={user.id} className="p-2 rounded" style={{ width: '30rem'  }}>
+            <Card.Body>
+                <Card.Title className="mb-3"><p className="h1">Perfil</p></Card.Title>
+                <ListGroup className="list-group-flush">
+                    <ListGroup.Item><strong>Email:</strong> {user.email}</ListGroup.Item>
+                    <ListGroup.Item><strong>UID:</strong> {user.id}</ListGroup.Item>
+                    <ListGroup.Item><strong>Nombre:</strong> {user.user_metadata?.name || "No disponible"}</ListGroup.Item>
+                    <ListGroup.Item><strong>Apellido:</strong> {user.user_metadata?.surname || "No disponible"}</ListGroup.Item>
+                    <ListGroup.Item><strong>Fecha Nacimiento:</strong> {user.user_metadata?.birthdate || "No disponible"}</ListGroup.Item>
+                </ListGroup>  
+            </Card.Body>
+        </Card>
+        : (
+            <p>Cargando usuarios...</p>
+        )}
+    </Container>
 
 
         </>
