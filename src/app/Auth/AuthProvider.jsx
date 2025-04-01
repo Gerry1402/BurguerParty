@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthContext } from './AuthContext';
-import supabase from '../../services/supabase';
+import supabase from '../../services/public';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);

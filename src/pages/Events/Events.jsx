@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap';
-import supabase from '../../services/supabase';
+import supabase from '../../services/public';
 import SignOut from '../../components/SignOut';
 
 const Events = () => {

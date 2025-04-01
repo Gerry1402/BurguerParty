@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
 import { inputs, defaultValues } from '../../data/Forms/User/SignIn.js';
-import supabase from '../../services/supabase.jsx';
+import supabase from '../../services/public.jsx';
 
 const SignIn = () => {
     const [formData, setFormData] = useState(defaultValues);

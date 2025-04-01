@@ -1,4 +1,4 @@
-import supabase from '../services/supabase';
+import supabase from '../services/public';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
