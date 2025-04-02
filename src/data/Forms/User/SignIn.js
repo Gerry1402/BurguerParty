@@ -2,18 +2,18 @@
 //     Row = [element1, element2, ...],
 //     ]
 
-import { extractDefaultValues } from '../Extra';
-import common from './Common';
+import { extractDefaultValuesInputs } from '../Extra';
+import { common_inputs } from './Common';
 
 export const inputs = [
     {
-        ...common.email,
+        ...common_inputs.email,
         size: { xs: 12, md: 6, lg: 6 },
     },
     {
-        ...common.password,
+        ...common_inputs.password,
         size: { xs: 12, md: 6, lg: 6 },
     },
 ];
 
-export const defaultValues = extractDefaultValues(inputs);
+export const defaultValues = extractDefaultValuesInputs(inputs);

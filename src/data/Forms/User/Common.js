@@ -1,91 +1,120 @@
+import axios from "axios";
 const adultAge = () => {
     const today = new Date();
     today.setFullYear(today.getFullYear() - 18);
-    return today.toISOString().split('T')[0];
+    return today.toISOString().split("T")[0];
 };
 
-const common = {
+export const getCitiesCountries = async () => {
+    const relations = await axios
+        .get("https://countriesnow.space/api/v0.1/countries/population/cities")
+        .then((data) => data.data.data.map(({ city, country }) => ({ [city]: country })));
+    const cities = relations.flatMap(obj => Object.keys(obj));
+    const countries = [...new Set(relations.flatMap(obj => Object.values(obj)))];
+    return { cities, countries, relations };
+};
 
+export const common_inputs = {
     name: {
-        label: 'Name',
+        label: "Name",
         control: {
-            type: 'text',
-            placeholder: 'Name',
-            name: 'name',
-            defaultValue: '',
+            type: "text",
+            placeholder: "Name",
+            name: "name",
+            defaultValue: "",
         },
-        feedback: 'Write a name',
+        feedback: "Write a name",
     },
 
     surname: {
-        label: 'Surname',
+        label: "Surname",
         control: {
-            type: 'text',
-            placeholder: 'Sur Name',
-            name: 'surname',
-            defaultValue: '',
+            type: "text",
+            placeholder: "Sur Name",
+            name: "surname",
+            defaultValue: "",
         },
-        feedback: 'Write one or two surnames',
+        feedback: "Write one or two surnames",
     },
 
-    username: {
-        label: 'Username',
-        group: '@',
+    display_name: {
+        label: "Username",
+        group: "@",
         control: {
-            type: 'text',
-            placeholder: 'username',
-            name: 'username',
-            defaultValue: '',
+            type: "text",
+            placeholder: "username",
+            name: "display_name",
+            defaultValue: "",
         },
-        feedback: 'Try other username',
+        feedback: "Try another username",
     },
 
     email: {
-        label: 'Email',
+        label: "Email",
         control: {
-            type: 'email',
-            placeholder: 'example@email.com',
-            name: 'email',
-            defaultValue: '',
+            type: "email",
+            placeholder: "example@email.com",
+            name: "email",
+            defaultValue: "",
         },
-        feedback: 'Write a valid email',
+        feedback: "Write a valid email",
     },
 
     password: {
-        label: 'Password',
+        label: "Password",
         control: {
-            type: 'password',
-            name: 'password',
+            type: "password",
+            name: "password",
             minLength: 8,
-            defaultValue: '',
+            defaultValue: "",
         },
-        feedback: 'Write a minimum of 8 characters',
+        feedback: "Write a minimum of 8 characters",
     },
 
     description: {
-        label: 'Description',
+        label: "Description",
         control: {
-            as: 'textarea',
+            as: "textarea",
             rows: 3,
-            placeholder: 'Write a minimum of 50 characters.',
-            name: 'description',
+            placeholder: "Write a minimum of 50 characters.",
+            name: "description",
             minLength: 50,
             maxLength: 500,
-            defaultValue: '',
+            defaultValue: "",
         },
-        feedback: 'Write a minimum of 50 characters',
+        feedback: "Write a minimum of 50 characters",
     },
 
     birthdate: {
-        label: 'Birthdate',
+        label: "Birthdate",
         control: {
-            type: 'date',
-            name: 'birthdate',
+            type: "date",
+            name: "birthdate",
             defaultValue: adultAge(),
             max: adultAge(),
         },
-        feedback: 'Write a valid birthdate',
+        feedback: "Write a valid phone number",
+    },
+    phone: {
+        label: "Phone Number",
+        control: {
+            type: "tel",
+            name: "phone",
+            defaultValue: "",
+        },
+        feedback: "Write a valid phone number",
     },
 };
 
-export default common;
+export const common_selects = {
+    country: {
+        name: "country",
+        defaultValue: "Choose a country",
+        options: [],
+    },
+    city: {
+        name: "city",
+        defaultValue: "Choose a city",
+        options: [],
+    },
+};

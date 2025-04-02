@@ -1,8 +1,8 @@
 import { extractDefaultValues } from './**Aux';
 
-export const inputs = [
-    [
-        {
+export const inputs = {
+        'name': {
+            id: 'name',
             size: { xs: 12, md: 6, lg: 6 },
             label: '',
             control: {
@@ -13,7 +13,6 @@ export const inputs = [
             },
             feedback: '',
         },
-    ],
-];
+};
 
 export const defaultValues = extractDefaultValues(inputs);

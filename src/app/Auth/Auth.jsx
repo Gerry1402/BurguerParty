@@ -2,8 +2,8 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { useAuth } from './useAuthContext';
-import { Spinner } from 'react-bootstrap';
 import Layout from '../../components/Layout';
+import Loading from '../../components/Loading';
 
 const Auth = () => {
     const { user } = useAuth();
@@ -19,11 +19,7 @@ const Auth = () => {
     }, []);
 
     if (isLoading) {
-        return (
-                <div className="d-flex w-100 justify-content-center">
-                    <Spinner animation="border" variant="primary"/>
-                </div>
-        );
+        return <Loading/>
     }
 
     return user ? (
