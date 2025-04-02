@@ -28,7 +28,7 @@ function DetailsEvent() {
       .eq('id', id)
       .single();
 
-    if (error) console.error(' Error cargando evento:', error.message);
+    if (error) console.error('Error cargando evento:', error.message);
     else setEvento(data);
   };
 
@@ -38,13 +38,13 @@ function DetailsEvent() {
     setUserId(currentUserId);
 
     try {
-      const { data: guests, error: guestsError } = await supabase
+      const { data: guests } = await supabase
         .from('user-event')
         .select('user_id, isGuest, isCreator')
         .eq('event_id', id)
         .eq('isGuest', true);
 
-      const { data: creatorRow, error: creatorError } = await supabase
+      const { data: creatorRow } = await supabase
         .from('user-event')
         .select('user_id')
         .eq('event_id', id)
@@ -55,13 +55,6 @@ function DetailsEvent() {
       const { data: allUsersData } = await supabase.auth.admin.listUsers();
       const allUsers = allUsersData?.users ?? [];
 
-      if (guestsError || creatorError) {
-        console.error(' Error cargando participantes o creador');
-        return;
-      }
-
-      console.log('Todos los usuarios:', allUsers);
-
       const usersMap = {};
       allUsers.forEach((u) => {
         usersMap[u.id] = {
@@ -70,19 +63,12 @@ function DetailsEvent() {
         };
       });
 
-      console.log('🗺️ Mapa de usuarios:', usersMap);
-      console.log('👤 Creador del evento:', creatorRow);
-      console.log('👥 Participantes encontrados:', guests);
-
       const enrichedGuests = guests.map((g) => ({
         user_id: g.user_id,
         ...usersMap[g.user_id],
       }));
 
       const enrichedCreator = usersMap[creatorRow?.user_id] || null;
-
-      console.log('👥 Participantes enriquecidos:', enrichedGuests);
-      console.log('👤 Creador enriquecido:', enrichedCreator);
 
       setParticipantes(enrichedGuests);
       setCreador(enrichedCreator);
