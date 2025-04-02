@@ -1,21 +1,69 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import supabase from '../../services/public';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function CreateEvent() {
-  const [evento, setEvento] = useState({
-    nombre: '',
-    fecha: '',
-    lugar: '',
-  });
+  const [evento, setEvento] = useState({ nombre: '', fecha: '' });
+  const [errorMsg, setErrorMsg] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEvento((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      setErrorMsg('Debes iniciar sesión para crear un evento.');
+      return;
+    }
+
+    const userId = user.id;
+
+    const { data: newEvent, error: insertEventError } = await supabase
+      .from('events')
+      .insert([{ name: evento.nombre, date: evento.fecha }])
+      .select()
+      .single();
+
+    if (insertEventError) {
+      setErrorMsg('Error al crear el evento.');
+      return;
+    }
+
+    const eventId = newEvent.id;
+
+    const { error: insertUserEventError } = await supabase
+      .from('user-event')
+      .insert([
+        {
+          user_id: userId,
+          event_id: eventId,
+          isCreator: true,
+          isGuest: true, 
+        },
+      ]);
+
+    if (insertUserEventError) {
+      setErrorMsg('Error al vincular tu cuenta al evento.');
+      return;
+    }
+
+    alert('Evento creado con éxito');
+    navigate(`/events/${eventId}`);
   };
 
   return (
@@ -29,11 +77,11 @@ function CreateEvent() {
           <Card.Body>
             <h2 className="mb-4">Nuevo evento</h2>
 
-            <Form>
+            {errorMsg && <p className="text-danger mb-3">{errorMsg}</p>}
+
+            <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label className="fs-5">
-                  <strong>Nombre del evento</strong>
-                </Form.Label>
+                <Form.Label className="fs-5"><strong>Nombre del evento</strong></Form.Label>
                 <Form.Control
                   type="text"
                   name="nombre"
@@ -41,40 +89,26 @@ function CreateEvent() {
                   onChange={handleChange}
                   placeholder="Ingresa el nombre del evento"
                   className="fs-5"
+                  required
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label className="fs-5">
-                  <strong>Fecha del evento</strong>
-                </Form.Label>
+              <Form.Group className="mb-4">
+                <Form.Label className="fs-5"><strong>Fecha del evento</strong></Form.Label>
                 <Form.Control
                   type="date"
                   name="fecha"
                   value={evento.fecha}
                   onChange={handleChange}
                   className="fs-5"
+                  required
                 />
               </Form.Group>
 
-              <Form.Group className="mb-4">
-                <Form.Label className="fs-5">
-                  <strong>Lugar del evento</strong>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="lugar"
-                  value={evento.lugar}
-                  onChange={handleChange}
-                  placeholder="Ingresa el lugar"
-                  className="fs-5"
-                />
-              </Form.Group>
+              <div className="d-flex justify-content-end">
+                <Button variant="primary" type="submit">Crear</Button>
+              </div>
             </Form>
-
-            <div className="d-flex justify-content-end mt-4">
-              <Button variant="primary">Crear</Button>
-            </div>
           </Card.Body>
         </Card>
       </Container>
@@ -83,3 +117,4 @@ function CreateEvent() {
 }
 
 export default CreateEvent;
+
