@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -8,9 +9,8 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
 import { inputs1, inputs2, selects, defaultValues } from "../../data/Forms/User/SignUp";
-import supabase from "../../services/supabase";
-import axios from "axios";
 import Loading from "../../components/Loading";
+import supabase from "../../services/supabase";
 
 const SignUp = () => {
     const [formData, setFormData] = useState(defaultValues);
