@@ -2,7 +2,8 @@
 node_modules
 scripts/flow/*/.flowconfig
 .flowconfig
-*~
+!.trunk/
+.*~
 *.pyc
 .grunt
 _SpecRunner.html
@@ -24,6 +25,7 @@ chrome-user-data
 *.swp
 *.swo
 .env
+*.aux
 
 packages/react-devtools-core/dist
 packages/react-devtools-extensions/chrome/build

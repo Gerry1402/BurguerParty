@@ -1,50 +1,85 @@
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+
+import { inputs, defaultValues } from '../../data/Forms/User/SignIn.js';
+import supabase from '../../services/supabase.jsx';
 
 const SignIn = () => {
-    // const handleSubmit = (event) => {
+    const [formData, setFormData] = useState(defaultValues);
+    const [validated, setValidated] = useState(false);
+    const navigate = useNavigate();
+
+    const handleChange = (e) =>
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const { email, password } = formData;
+        const {
+            data: { user },
+            error,
+        } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+            console.error('Error: ', error);
+        } else {
+            console.log('User: ', user);
+            navigate(`/`);
+        }
+        setValidated(true);
+    };
+
     return (
-        <Form>
-            <Container>
+        <Container>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row>
-                    <Col sm={6}>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control
-                                type="email"
-                                placeholder="Enter email"
-                            />
+                    {inputs.map((input, index) => (
+                        <Form.Group as={Col} {...input.size} className="mb-3" key={index}>
+                            <FloatingLabel label={input.label}>
+                                <Form.Control
+                                    required
+                                    {...input.control}
+                                    placeholder=""
+                                    onChange={handleChange}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {input.feedback}
+                                </Form.Control.Feedback>
+                                <Form.Control.Feedback />
+                            </FloatingLabel>
                         </Form.Group>
-                    </Col>
-                    <Col sm={6}>
-                        <Form.Group
-                            className="mb-3"
-                            controlId="formBasicPassword"
-                        >
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Password"
-                            />
-                        </Form.Group>
-                    </Col>
+                    ))}
                 </Row>
                 <Row>
-                    <Col>
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            style={{ width: "100%" }}
-                        >
-                            Submit
+                    <Col xs={12} md={12} lg={12}>
+                        <Button variant="primary" className="w-100" type="submit">
+                            Sign In
                         </Button>
                     </Col>
                 </Row>
-            </Container>
-        </Form>
+            </Form>
+            <Row className="text-center mt-3">
+                <p>
+                    Don&apos;t have an account?{' '}
+                    <a
+                        href="/signup"
+                        className="text-primary link-underline link-underline-opacity-0"
+                    >
+                        Sign Up
+                    </a>
+                </p>
+            </Row>
+        </Container>
     );
 };
 
