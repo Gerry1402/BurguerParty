@@ -1,9 +1,9 @@
+import { useEffect, useState } from "react";
 import { Button, Card, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import moment from "moment";
 import supabase from "../../services/public";
 import SignOut from "../../components/SignOut";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import moment from "moment";
 
 const Events = () => {
   const [user, setUser] = useState(null);
@@ -24,7 +24,7 @@ const Events = () => {
       const { data, error } = await supabase.from("events").select("*");
 
       if (error) {
-        console.error("Error al obtener el usuario:", error);
+        console.error("Error al obtener los eventos:", error);
         return;
       }
 
@@ -42,20 +42,24 @@ const Events = () => {
         <p className="h1">Listado de eventos</p>
         {events && events.length > 0 ? (
           events.map((e) => (
-            <Card key={e.id}>
+            <Card key={e.id} className="mb-3 position-relative">
               <Card.Body>
                 <Card.Title>{e.name}</Card.Title>
                 <Card.Text>
-                  {moment(e.date, "YYYY-MM-DD HH:mm:ss").format(
-                    "DD/MM/YYYY HH:mm"
-                  )}
+                  {moment(e.date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm")}
                 </Card.Text>
-                <div className="position-absolute top-50 end-0 translate-middle-y me-3">
-                  <Button className="bg-transparent border-0">
-                    <i className="bi bi-eye text-dark"></i>
-                  </Button>
-                  <Button className="bg-transparent border-0">
-                    <i className="bi bi-plus-lg text-dark"></i>
+
+                <div className="position-absolute top-50 end-0 translate-middle-y me-3 d-flex gap-2">
+                  {/* Botón para ver detalles del evento */}
+                  <Link to={`/events/${e.id}`}>
+                    <Button className="bg-transparent border-0">
+                      <i className="bi bi-plus-lg text-dark fs-4"></i>
+                    </Button>
+                  </Link>
+
+                  {/* Aquí podrías agregar más acciones, por ahora está vacío */}
+                  <Button className="bg-transparent border-0" disabled>
+                    <i className="bi bi-eye text-muted fs-4"></i>
                   </Button>
                 </div>
               </Card.Body>
@@ -64,18 +68,24 @@ const Events = () => {
         ) : (
           <p>No hay eventos</p>
         )}
-        <Button className="position-fixed bottom-0 end-0 rounded-circle m-3">
-          <i className="bi bi-plus-lg"></i>
-        </Button>
+
+        {/* Botón flotante para crear nuevo evento */}
+        <Link to="/create-event">
+          <Button className="position-fixed bottom-0 end-0 rounded-circle m-3" style={{ width: "60px", height: "60px" }}>
+            <i className="bi bi-plus-lg fs-4"></i>
+          </Button>
+        </Link>
       </Container>
 
+      {/* Mostrar perfil del usuario si está logueado */}
       {user ? (
         <Link to={`/profile/${user.id}`}>
-          <Button>Show User</Button>
+          <Button className="mt-4">Ver perfil</Button>
         </Link>
       ) : (
         <p>Cargando usuario...</p>
       )}
+
       <SignOut />
     </>
   );
