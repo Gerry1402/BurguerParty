@@ -50,14 +50,11 @@ const Events = () => {
                 </Card.Text>
 
                 <div className="position-absolute top-50 end-0 translate-middle-y me-3 d-flex gap-2">
-                  {/* Botón para ver detalles del evento */}
                   <Link to={`/events/${e.id}`}>
                     <Button className="bg-transparent border-0">
                       <i className="bi bi-plus-lg text-dark fs-4"></i>
                     </Button>
                   </Link>
-
-                  {/* Aquí podrías agregar más acciones, por ahora está vacío */}
                   <Button className="bg-transparent border-0" disabled>
                     <i className="bi bi-eye text-muted fs-4"></i>
                   </Button>
@@ -69,15 +66,12 @@ const Events = () => {
           <p>No hay eventos</p>
         )}
 
-        {/* Botón flotante para crear nuevo evento */}
         <Link to="/create-event">
           <Button className="position-fixed bottom-0 end-0 rounded-circle m-3" style={{ width: "60px", height: "60px" }}>
             <i className="bi bi-plus-lg fs-4"></i>
           </Button>
         </Link>
       </Container>
-
-      {/* Mostrar perfil del usuario si está logueado */}
       {user ? (
         <Link to={`/profile/${user.id}`}>
           <Button className="mt-4">Ver perfil</Button>
